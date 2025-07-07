@@ -1,0 +1,13 @@
+/home/kenyzum/Desktop/Programming/SigmaHackNSlash/build/CMakeFiles/edit_cache.dir
+/home/kenyzum/Desktop/Programming/SigmaHackNSlash/build/CMakeFiles/rebuild_cache.dir
+/home/kenyzum/Desktop/Programming/SigmaHackNSlash/build/CMakeFiles/list_install_components.dir
+/home/kenyzum/Desktop/Programming/SigmaHackNSlash/build/CMakeFiles/install.dir
+/home/kenyzum/Desktop/Programming/SigmaHackNSlash/build/CMakeFiles/install/local.dir
+/home/kenyzum/Desktop/Programming/SigmaHackNSlash/build/CMakeFiles/install/strip.dir
+/home/kenyzum/Desktop/Programming/SigmaHackNSlash/build/src/CMakeFiles/SigmaHackNSlash.dir
+/home/kenyzum/Desktop/Programming/SigmaHackNSlash/build/src/CMakeFiles/edit_cache.dir
+/home/kenyzum/Desktop/Programming/SigmaHackNSlash/build/src/CMakeFiles/rebuild_cache.dir
+/home/kenyzum/Desktop/Programming/SigmaHackNSlash/build/src/CMakeFiles/list_install_components.dir
+/home/kenyzum/Desktop/Programming/SigmaHackNSlash/build/src/CMakeFiles/install.dir
+/home/kenyzum/Desktop/Programming/SigmaHackNSlash/build/src/CMakeFiles/install/local.dir
+/home/kenyzum/Desktop/Programming/SigmaHackNSlash/build/src/CMakeFiles/install/strip.dir
