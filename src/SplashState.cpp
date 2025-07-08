@@ -11,8 +11,14 @@ SplashState::~SplashState() {}
 // Initializes background and sets scale
 void SplashState::init() {
     m_data->assets.loadTexture("SplashState Background", SPLASHSTATE_BACKGROUND_PATH);
+    m_data->assets.loadTexture("SplashState Title", SPLASHSTATE_TITLE_PATH);
+
     m_background = sf::Sprite(this->m_data->assets.getTexture("SplashState Background"));
     m_background->setScale(sf::Vector2f(12, 12));
+
+    m_title = sf::Sprite(this->m_data->assets.getTexture("SplashState Title"));
+    m_title->setOrigin(sf::Vector2f(m_title->getLocalBounds().size.x / 2, m_title->getLocalBounds().size.y / 2));
+    m_title->setPosition(sf::Vector2f(m_data->window->getSize().x / 2, m_data->window->getSize().y / 2));
 }
 
 // Handles user input (closing window)
@@ -35,5 +41,6 @@ void SplashState::update(float dt) {
 void SplashState::render(float dt) {
     m_data->window->clear();
     m_data->window->draw(*m_background);
+    m_data->window->draw(*m_title);
     m_data->window->display();
 }

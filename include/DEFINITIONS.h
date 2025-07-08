@@ -6,9 +6,10 @@
 
 // Paths to graphical resources
 #define SPLASHSTATE_BACKGROUND_PATH             "../../resources/background_splash.png" // Splash screen background
+#define SPLASHSTATE_TITLE_PATH                 "../../resources/splash_title.png"
 #define SPLASHSTATE_SHOWTIME 3.0f // Splash screen display time
 #define MAINMENU_BACKGROUND_PATH                "../../resources/background_splash.png" // Main menu background
-#define MAINMENU_TITLE_PATH                     "../../resources/background_splash.png" // Game title
+#define MAINMENU_TITLE_PATH                     "../../resources/splash_title.png" // Game title
 #define MAINMENU_PLAYBUTTON_PATH                "../../resources/background_splash.png" // Play button
 #define GAMESTATE_BACKGROUND_PATH               "../../resources/background_splash.png" // Game background
 #define PLAYER_TEXTURE_PATH                     "../../resources/BODY_male.png" // Player texture

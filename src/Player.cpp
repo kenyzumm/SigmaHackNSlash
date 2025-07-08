@@ -30,13 +30,9 @@ void Player::init() {
 
 // Handles keyboard input and sets the movement direction and jump
 void Player::handleInput() {
-    m_dirX = 0;
-    if (m_data->input.isKeyPressed(sf::Keyboard::Key::A)) {
-        m_dirX = -1; // Move left
-    }
-    if (m_data->input.isKeyPressed(sf::Keyboard::Key::D)) {
-        m_dirX = 1; // Move right
-    }
+    // Direction: D (right) = 1, A (left) = -1, none = 0
+    m_dirX = (int)(m_data->input.isKeyPressed(sf::Keyboard::Key::D)) -
+             (int)(m_data->input.isKeyPressed(sf::Keyboard::Key::A));
     if (m_data->input.isKeyPressed(sf::Keyboard::Key::Space)) {
         m_movement.jump(); // Jump
     }
@@ -74,12 +70,16 @@ void Player::update(float dt, TileMap* tileMap) {
     // Select animation based on movement state and ground contact
     float vx = m_movement.getVelocityX();
     float vy = m_movement.getVelocityY();
+    AnimState newState;
     if (!m_movement.getOnGround()) {
-        m_animation.setAnimation(vy < 0 ? AnimState::Jump : AnimState::Fall); // Jump or fall
-    } else if (std::abs(vx) > 1.0f) {
-        m_animation.setAnimation(AnimState::Run); // Run
+        newState = (vy < 0 ? AnimState::Jump : AnimState::Fall);
+    } else if (m_dirX != 0) {
+        newState = AnimState::Run;
     } else {
-        m_animation.setAnimation(AnimState::Idle); // Idle
+        newState = AnimState::Idle;
+    }
+    if (m_animation.getCurrentState() != newState) {
+        m_animation.setAnimation(newState);
     }
     m_animation.update(dt); // Move to the next animation frame
 }

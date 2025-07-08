@@ -10,6 +10,7 @@ class SplashState : public State {
     GameDataRef m_data;                // Common game data (window, resources, input)
     sf::Clock m_clock;                 // Clock to measure splash duration
     std::optional<sf::Sprite> m_background; // Splash screen background
+    std::optional<sf::Sprite> m_title;
 public:
     SplashState(GameDataRef data);
     ~SplashState();

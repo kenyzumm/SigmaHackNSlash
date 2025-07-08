@@ -1,6 +1,6 @@
 #include "MainMenuState.h"
 #include "GameState.h"
-
+#include <iostream>
 // Constructor: connects game data
 MainMenuState::MainMenuState(GameDataRef data) : m_data(data) {}
 MainMenuState::~MainMenuState() {}
@@ -14,6 +14,15 @@ void MainMenuState::init() {
     m_title = sf::Sprite(m_data->assets.getTexture("MainMenu Title"));
     m_playButton = sf::Sprite(m_data->assets.getTexture("MainMenu PlayButton"));
     // You can set the position of the title and button
+
+    m_background->setScale(sf::Vector2f(12,12));
+
+    m_title->setOrigin(sf::Vector2f(m_title->getLocalBounds().size.x, 0));
+    m_title->setPosition(sf::Vector2f(m_data->window->getSize().x, 0));
+
+    // m_playButton->setOrigin(sf::Vector2f(m_playButton->getLocalBounds().size.x, m_playButton->getLocalBounds().size.y));
+    m_playButton->setPosition(sf::Vector2f(m_data->window->getSize().x/2 - m_playButton->getGlobalBounds().size.x,
+        m_data->window->getSize().y/2 - m_playButton->getGlobalBounds().size.y));
 }
 
 // Handles user input (closing window, clicking button)

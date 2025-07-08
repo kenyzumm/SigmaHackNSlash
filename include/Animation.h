@@ -48,5 +48,7 @@ public:
     // Getters
     bool isFinished() const;
     int getCurrentFrame() const;
+    // Returns the current animation state
+    AnimState getCurrentState() const;
 };
 #endif
