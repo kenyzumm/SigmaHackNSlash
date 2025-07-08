@@ -1,8 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"/home/kenyzum/Desktop/Programming/SigmaHackNSlash/build/cmake_install.cmake",
-		"/home/kenyzum/Desktop/Programming/SigmaHackNSlash/build/src/cmake_install.cmake"
-	],
-	"Parallel" : false
-}

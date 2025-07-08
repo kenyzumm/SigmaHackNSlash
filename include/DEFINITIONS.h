@@ -12,7 +12,7 @@
 
 #define GAMESTATE_BACKGROUND_PATH               "../../resources/background_splash.png"
 
-#define PLAYER_TEXTURE_PATH                     "../../resources/player.png"
+#define PLAYER_TEXTURE_PATH                     "../../resources/BODY_male.png"
 #define BODY_MALE_TEXTURE_PATH                  "../../resources/BODY_male.png"
 
 // Animation frame times

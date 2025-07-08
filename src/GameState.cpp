@@ -1,9 +1,11 @@
 #include "GameState.h"
 #include <iostream>
 
-GameState::GameState(GameDataRef data) : m_data(data) {}
+GameState::GameState(GameDataRef data) : m_data(data), m_player(nullptr) {}
 
-GameState::~GameState() {}
+GameState::~GameState() {
+    delete m_player;
+}
 
 void GameState::init() {
     // Load background
@@ -14,6 +16,8 @@ void GameState::init() {
     m_data->assets.loadTexture("Player", PLAYER_TEXTURE_PATH);
     
     // Initialize player
+    m_player = new Player(m_data);
+    m_player->init();
     
     
        
@@ -33,7 +37,9 @@ void GameState::handleInput() {
     
 }
 
-void GameState::update(float dt) {}
+void GameState::update(float dt) {
+    if (m_player) m_player->update(dt);
+}
 
 void GameState::render(float dt) {
     m_data->window->clear();
@@ -42,7 +48,7 @@ void GameState::render(float dt) {
     if (m_background.has_value()) {
         m_data->window->draw(*m_background);
     }
-
+    if (m_player) m_player->render(dt);
     m_data->window->display();
 }
 

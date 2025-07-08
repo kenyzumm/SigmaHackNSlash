@@ -9,6 +9,11 @@ set(SOURCES
     AssetsManager.cpp
     InputManager.cpp
     Logger.cpp
+    Player.cpp
+    Animation.cpp
+    Collision.cpp
+    Movement.cpp
+    TileMap.cpp
 )
 
 # Create executable

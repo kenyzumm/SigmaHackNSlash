@@ -4,11 +4,13 @@
 #include <DEFINITIONS.h>
 #include <State.h>
 #include <Game.h>
+#include "Player.h"
 
 class GameState : public State {
     GameDataRef m_data;
     sf::Clock m_clock;
     std::optional<sf::Sprite> m_background;
+    Player* m_player;
     
     
     
