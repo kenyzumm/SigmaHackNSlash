@@ -1,12 +1,15 @@
 #include "Animation.h"
 
-Animation::Animation() : currentFrame(0), totalFrames(0), frameTime(0.1f), timer(0), currentAnimation(AnimState::Idle), playing(false), m_sprite(nullptr), frameWidth(0), frameHeight(0), startX(0), startY(0) {}
+// Constructor: sets default values for animation fields
+Animation::Animation() : currentFrame(0), frameTime(0.1f), timer(0), currentAnimation(AnimState::Idle), m_sprite(nullptr), frameWidth(0), frameHeight(0), startX(0), startY(0) {}
 Animation::~Animation() {}
 
+// Connects a pointer to the sprite on which animation frames will be displayed
 void Animation::setSprite(sf::Sprite* sprite) {
     m_sprite = sprite;
 }
 
+// Sets the frame size and the position of the first frame in the texture
 void Animation::setFrameData(int frameW, int frameH, int sX, int sY) {
     frameWidth = frameW;
     frameHeight = frameH;
@@ -17,10 +20,12 @@ void Animation::setFrameData(int frameW, int frameH, int sX, int sY) {
     }
 }
 
+// Adds an animation for a given state (Idle, Run, Jump, Fall)
+// numColumns is the total number of columns in the spritesheet (needed to calculate the frame position)
 void Animation::addAnimation(AnimState state, int row, int colStart, int colEnd, float frameTime, int numColumns) {
     AnimationData data;
-    data.startFrame = colStart + row * numColumns;
-    data.endFrame = colEnd + row * numColumns;
+    data.startFrame = colStart + row * numColumns; // Index of the first frame in the grid
+    data.endFrame = colEnd + row * numColumns;     // Index of the last frame
     data.frameTime = frameTime;
     data.row = row;
     data.colStart = colStart;
@@ -29,13 +34,13 @@ void Animation::addAnimation(AnimState state, int row, int colStart, int colEnd,
     animations[state] = data;
 }
 
+// Sets the current animation (resets the frame counter)
 void Animation::setAnimation(AnimState name) {
     if (animations.find(name) != animations.end()) {
         currentAnimation = name;
         currentFrame = animations[name].startFrame;
         frameTime = animations[name].frameTime;
         timer = 0;
-        playing = true;
         if (m_sprite) {
             int x = startX + currentFrame * frameWidth;
             int y = startY;
@@ -44,8 +49,9 @@ void Animation::setAnimation(AnimState name) {
     }
 }
 
-void Animation::play(float dt) {
-    if (!playing || animations.find(currentAnimation) == animations.end() || !m_sprite) return;
+// Updates the animation: changes the frame if the time has elapsed, calculates the frame position based on numColumns
+void Animation::update(float dt) {
+    if (animations.find(currentAnimation) == animations.end() || !m_sprite) return;
     timer += dt;
     AnimationData& anim = animations[currentAnimation];
     if (timer >= frameTime) {
@@ -53,10 +59,9 @@ void Animation::play(float dt) {
         currentFrame++;
         if (currentFrame > anim.endFrame) {
             currentFrame = anim.startFrame;
-            playing = false;
         }
     }
-    // Wylicz kolumnę i rząd na podstawie currentFrame
+    // Calculate column and row based on frame number and number of columns in the spritesheet
     int frameIdx = currentFrame;
     int col = frameIdx % anim.numColumns;
     int row = frameIdx / anim.numColumns;
@@ -65,16 +70,18 @@ void Animation::play(float dt) {
     m_sprite->setTextureRect(sf::IntRect({x, y}, {frameWidth, frameHeight}));
 }
 
-void Animation::update(float dt) {
-    play(dt);
-}
-
+// Returns true if the animation has returned to the beginning (useful for one-time animations)
 bool Animation::isFinished() const {
     if (animations.find(currentAnimation) == animations.end()) return true;
     const AnimationData& anim = animations.at(currentAnimation);
-    return !playing && currentFrame == anim.startFrame;
+    return currentFrame == anim.startFrame;
 }
 
+// Returns the index of the current frame
 int Animation::getCurrentFrame() const {
     return currentFrame;
+}
+
+AnimState Animation::getCurrentState() const {
+    return currentAnimation;
 }

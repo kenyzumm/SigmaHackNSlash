@@ -4,13 +4,15 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "DEFINITIONS.h"
 
+// Constructor: creates a map with given dimensions and tile size
 TileMap::TileMap(int width, int height, int tileSize)
-    : width(width), height(height), tileSize(tileSize), layers(1) {
+    : width(width), height(height), tileSize(tileSize) {
     tiles.resize(height, std::vector<Tile>(width, {TILE_EMPTY, false}));
 }
 
 TileMap::~TileMap() {}
 
+// Sets the type and collidability of the tile at position (x, y)
 void TileMap::setTile(int x, int y, int tileID, bool collidable) {
     if (x >= 0 && x < width && y >= 0 && y < height) {
         tiles[y][x].id = tileID;
@@ -18,6 +20,7 @@ void TileMap::setTile(int x, int y, int tileID, bool collidable) {
     }
 }
 
+// Returns the tile at position (x, y)
 Tile TileMap::getTile(int x, int y) const {
     if (x >= 0 && x < width && y >= 0 && y < height) {
         return tiles[y][x];
@@ -25,6 +28,7 @@ Tile TileMap::getTile(int x, int y) const {
     return {0, false};
 }
 
+// Checks if the tile at position (x, y) is collidable
 bool TileMap::isCollidable(int x, int y) const {
     if (x >= 0 && x < width && y >= 0 && y < height) {
         return tiles[y][x].isCollidable;
@@ -32,8 +36,8 @@ bool TileMap::isCollidable(int x, int y) const {
     return false;
 }
 
+// Loads the map from a text file (each tile: id and collidability)
 void TileMap::loadFromFile(const std::string& filename) {
-    // Szkic: wczytaj mapę z pliku tekstowego
     std::ifstream file(filename);
     if (!file.is_open()) return;
     for (int y = 0; y < height; ++y) {
@@ -47,8 +51,8 @@ void TileMap::loadFromFile(const std::string& filename) {
     file.close();
 }
 
+// Saves the map to a text file (each tile: id and collidability)
 void TileMap::saveToFile(const std::string& filename) const {
-    // Szkic: zapisz mapę do pliku tekstowego
     std::ofstream file(filename);
     if (!file.is_open()) return;
     for (int y = 0; y < height; ++y) {
@@ -60,11 +64,9 @@ void TileMap::saveToFile(const std::string& filename) const {
     file.close();
 }
 
+// Renders the map: draws rectangles for each non-empty tile
 void TileMap::render() {
-    // Rysuj tylko kafelki różne od TILE_EMPTY
     sf::RenderWindow* window = nullptr;
-    // Spróbuj znaleźć okno globalnie (przykładowo przez singleton lub przekazać przez parametr w przyszłości)
-    // Tu uproszczone założenie:
     extern sf::RenderWindow* g_window;
     window = g_window;
     if (!window) return;
@@ -81,10 +83,9 @@ void TileMap::render() {
     }
 }
 
-void TileMap::update(float dt) {
-    // Tu można dodać logikę aktualizacji mapy
-}
-
+// Returns the map width (in tiles)
 int TileMap::getWidth() const { return width; }
+// Returns the map height (in tiles)
 int TileMap::getHeight() const { return height; }
+// Returns the size of a single tile
 int TileMap::getTileSize() const { return tileSize; }

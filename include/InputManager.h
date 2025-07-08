@@ -4,18 +4,18 @@
 #include <DEFINITIONS.h>
 #include "Logger.h"
 
+// Class responsible for user input (keyboard, mouse)
 class InputManager {
-    Logger m_log;
 public:
-
     InputManager();
     ~InputManager();
+    // Checks if the sprite was clicked by the mouse
     bool isSpriteClicked(sf::Sprite &object, sf::Mouse::Button button, sf::RenderWindow* window);
+    // Returns the mouse position relative to the window
     sf::Vector2i getMousePosition(sf::RenderWindow* window);
+    // Checks if a key is pressed
     bool isKeyPressed(sf::Keyboard::Key key);
+    // Checks if a key was just pressed (only once)
     bool isKeyJustPressed(sf::Keyboard::Key key);
 };
-
-
-
 #endif //INPUTMANAGER_H

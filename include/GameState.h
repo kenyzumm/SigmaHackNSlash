@@ -7,23 +7,25 @@
 #include "Player.h"
 #include "TileMap.h"
 
+// Game state (gameplay)
 class GameState : public State {
-    GameDataRef m_data;
-    sf::Clock m_clock;
-    std::optional<sf::Sprite> m_background;
-    Player* m_player;
-    TileMap* m_tileMap;
-    
-    
-    
+    GameDataRef m_data;                // Common game data (window, resources, input)
+    sf::Clock m_clock;                 // Clock for measuring time
+    std::optional<sf::Sprite> m_background; // Game background
+    Player* m_player;                  // Pointer to player
+    TileMap* m_tileMap;                // Pointer to tile map
 public:
+    // Creates game state and connects to game data
     GameState(GameDataRef data);
     ~GameState();
-    
-    // Control
+
+    // Initializes game state (loading resources, setting map and player)
     void init();
+    // Handles user input
     void handleInput();
+    // Updates game logic (movement, collisions, animations)
     void update(float dt);
+    // Renders game on screen
     void render(float dt);
 };
 

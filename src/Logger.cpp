@@ -3,9 +3,10 @@
 #include <ctime>
 #include <iomanip>
 
+// Constructor: opens the log file and sets the level map
 Logger::Logger(const std::string& filename) : logFile(filename, std::ios_base::app) {
     if (!logFile) {
-        std::cerr << "Nie można otworzyć pliku logu!" << std::endl;
+        std::cerr << "Cannot open log file!" << std::endl;
     }
     levelNames = {
         {Level::DEBUG, "DEBUG"},
@@ -16,10 +17,11 @@ Logger::Logger(const std::string& filename) : logFile(filename, std::ios_base::a
     };
 }
 
+// Writes a message to the log file at a given level
 void Logger::log(Level level, const std::string& message) {
     if (!logFile) return;
     if (!shouldLog(level)) return;
-    std::lock_guard<std::mutex> lock(mutex);
+    std::lock_guard<std::mutex> lock(mutex); // Ensures thread safety
 
     std::time_t now = std::time(nullptr);
     char buf[32];
@@ -28,10 +30,12 @@ void Logger::log(Level level, const std::string& message) {
     logFile << "[" << buf << "] [" << levelNames[level] << "] " << message << std::endl;
 }
 
+// Sets the minimum log level
 void Logger::setLevel(Level newLevel) {
     minLevel = newLevel;
 }
 
+// Checks if a given level should be logged
 bool Logger::shouldLog(Level level) const {
     return level >= minLevel;
 }
