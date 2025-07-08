@@ -5,12 +5,14 @@
 #include <State.h>
 #include <Game.h>
 #include "Player.h"
+#include "TileMap.h"
 
 class GameState : public State {
     GameDataRef m_data;
     sf::Clock m_clock;
     std::optional<sf::Sprite> m_background;
     Player* m_player;
+    TileMap* m_tileMap;
     
     
     

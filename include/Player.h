@@ -5,11 +5,11 @@
 #include "Collision.h"
 #include "Game.h"
 #include <SFML/Graphics/Sprite.hpp>
+#include <optional>
 
 class Player {
 private:
     GameDataRef m_data;
-    std::optional<sf::Sprite> m_sprite;
 
     Movement m_movement;
     Animation m_animation;
@@ -18,6 +18,8 @@ private:
     float m_dirX, m_dirY;
     bool m_isMoving;
     std::string m_state; // np. "idle", "run", "jump"
+
+    std::optional<sf::Sprite> m_sprite;
 
     // void updateSpritePosition(); // już niepotrzebne
 

@@ -10,13 +10,15 @@ void Player::init() {
     m_state = "idle";
     m_movement.setVelocity(0, 0);
     m_movement.setOnGround(false);
-    m_sprite->setTexture(m_data->assets.getTexture("Player"));
+    m_sprite.emplace(m_data->assets.getTexture("Player"));
     m_sprite->setPosition({100.0f, 100.0f});
     m_collision.posX = m_sprite->getPosition().x;
     m_collision.posY = m_sprite->getPosition().y;
     // Integracja animacji
-    m_animation.setSprite(*m_sprite);
-    m_animation.setFrameData(32, 32, 0, 0); // przykładowe wartości: szerokość, wysokość, startX, startY
+    if (m_sprite) {
+        m_animation.setSprite(&(*m_sprite));
+    }
+    m_animation.setFrameData(64, 64, 0, 0); // przykładowe wartości: szerokość, wysokość, startX, startY
     m_animation.addAnimation("idle", 0, 3, 0.15f); // przykładowa animacja: klatki 0-3
     m_animation.setAnimation("idle");
 }
@@ -46,35 +48,39 @@ void Player::update(float dt) {
     }
     m_movement.update(dt);
     // Aktualizacja pozycji na podstawie Movement
-    sf::Vector2f pos = m_sprite->getPosition();
-    pos.x += m_movement.getVelocityX() * dt;
-    pos.y += m_movement.getVelocityY() * dt;
-    m_sprite->setPosition(pos);
-    // Przykład: jeśli gracz dotknął ziemi
-    // if (pos.y >= groundLevel) {
-    //     pos.y = groundLevel;
-    //     m_movement.setOnGround(true);
-    //     m_sprite->setPosition(pos);
-    // }
-    m_collision.posX = pos.x;
-    m_collision.posY = pos.y;
+    if (m_sprite) {
+        sf::Vector2f pos = m_sprite->getPosition();
+        pos.x += m_movement.getVelocityX() * dt;
+        pos.y += m_movement.getVelocityY() * dt;
+        m_sprite->setPosition(pos);
+        // Przykład: jeśli gracz dotknął ziemi
+        // if (pos.y >= groundLevel) {
+        //     pos.y = groundLevel;
+        //     m_movement.setOnGround(true);
+        //     m_sprite->setPosition(pos);
+        // }
+        m_collision.posX = pos.x;
+        m_collision.posY = pos.y;
+    }
     m_animation.update(dt);
 }
 
 void Player::render(float dt) {
-    if (m_data && m_data->window) {
+    if (m_data && m_data->window && m_sprite) {
         m_data->window->draw(*m_sprite);
     }
 }
 
 void Player::setPosition(float x, float y) {
-    m_sprite->setPosition({x, y});
-    m_movement.setVelocity(0, 0);
-    m_collision.posX = x;
-    m_collision.posY = y;
+    if (m_sprite) {
+        m_sprite->setPosition({x, y});
+        m_movement.setVelocity(0, 0);
+        m_collision.posX = x;
+        m_collision.posY = y;
+    }
 }
 
-float Player::getX() const { return m_sprite->getPosition().x; }
-float Player::getY() const { return m_sprite->getPosition().y; }
+float Player::getX() const { return m_sprite ? m_sprite->getPosition().x : 0.f; }
+float Player::getY() const { return m_sprite ? m_sprite->getPosition().y : 0.f; }
 
 Collision& Player::getCollision() { return m_collision; }

@@ -1,10 +1,10 @@
 #include "GameState.h"
-#include <iostream>
 
 GameState::GameState(GameDataRef data) : m_data(data), m_player(nullptr) {}
 
 GameState::~GameState() {
     delete m_player;
+    delete m_tileMap;
 }
 
 void GameState::init() {
@@ -17,6 +17,7 @@ void GameState::init() {
     
     // Initialize player
     m_player = new Player(m_data);
+    m_tileMap = new TileMap(100, 100, 32);
     m_player->init();
     
     
@@ -34,7 +35,9 @@ void GameState::handleInput() {
             this->m_data->window->close();
         }
     }
-    
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Backspace)) {
+        this->m_data->window->close();
+    }
 }
 
 void GameState::update(float dt) {
