@@ -17,14 +17,14 @@ void Player::init() {
     if (m_sprite) {
         m_animation.setSprite(&(*m_sprite)); // Connect the animation to the sprite
         m_sprite->setOrigin({32.f, 64.f}); // Set the bottom center as the reference point
-        m_sprite->setPosition({100.f, 200.f}); // Initial position
+        // m_sprite->setPosition({100.f, 200.f}); // Initial position (REMOVED)
     }
     m_animation.setFrameData(64, 64, 0, 0); // Animation frame size
     // Add animations for different states
-    m_animation.addAnimation(AnimState::Idle, 0, 0, 0, 1.0f, 9);
+    m_animation.addAnimation(AnimState::Idle, 2, 0, 0, 1.0f, 9);
     m_animation.addAnimation(AnimState::Run, 3, 1, 8, 0.1f, 9);
     m_animation.addAnimation(AnimState::Jump, 2, 0, 0, 0.2f, 9);
-    m_animation.addAnimation(AnimState::Fall, 1, 0, 0, 0.2f, 9);
+    m_animation.addAnimation(AnimState::Fall, 2, 0, 0, 0.2f, 9);
     m_animation.setAnimation(AnimState::Idle); // Set the initial animation
 }
 
@@ -33,8 +33,16 @@ void Player::handleInput() {
     // Direction: D (right) = 1, A (left) = -1, none = 0
     m_dirX = (int)(m_data->input.isKeyPressed(sf::Keyboard::Key::D)) -
              (int)(m_data->input.isKeyPressed(sf::Keyboard::Key::A));
-    if (m_data->input.isKeyPressed(sf::Keyboard::Key::Space)) {
-        m_movement.jump(); // Jump
+    
+    // Handle jump and double jump with Space key (only on key press, not hold)
+    if (m_data->input.isKeyJustPressed(sf::Keyboard::Key::Space)) {
+        if (m_movement.getOnGround()) {
+            // First jump when on ground
+            m_movement.jump();
+        } else if (!m_movement.getHasDoubleJumped() && m_movement.getCanDoubleJump()) {
+            // Double jump when in air and haven't used double jump yet
+            m_movement.doubleJump();
+        }
     }
 }
 
@@ -43,6 +51,8 @@ void Player::update(float dt, TileMap* tileMap) {
     handleInput(); // First handle input
     m_isMoving = (m_dirX != 0.0f); // Is the player moving
     m_movement.update(m_dirX, dt); // Update player movement physics
+
+    
     if (m_sprite) {
         // Move the sprite based on velocity
         sf::Vector2f pos = m_sprite->getPosition();
@@ -51,9 +61,12 @@ void Player::update(float dt, TileMap* tileMap) {
         // Check for collisions with tiles below
         if (tileMap) {
             int tileSize = tileMap->getTileSize();
+            // Check collision below the player (at the feet)
+            // Since sprite origin is at bottom center, pos.y is already at feet level
             float feetY = pos.y;
             int tileX = static_cast<int>(pos.x / tileSize);
             int tileY = static_cast<int>(feetY / tileSize);
+            
             if (tileMap->isCollidable(tileX, tileY)) {
                 // If there is a collidable tile below, stop falling
                 m_movement.setVelocity(m_movement.getVelocityX(), 0);

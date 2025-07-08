@@ -65,10 +65,7 @@ void TileMap::saveToFile(const std::string& filename) const {
 }
 
 // Renders the map: draws rectangles for each non-empty tile
-void TileMap::render() {
-    sf::RenderWindow* window = nullptr;
-    extern sf::RenderWindow* g_window;
-    window = g_window;
+void TileMap::render(sf::RenderWindow* window) {
     if (!window) return;
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {

@@ -6,6 +6,7 @@
 #include <Game.h>
 #include "Player.h"
 #include "TileMap.h"
+#include "Logger.h"
 
 // Game state (gameplay)
 class GameState : public State {
@@ -14,6 +15,7 @@ class GameState : public State {
     std::optional<sf::Sprite> m_background; // Game background
     Player* m_player;                  // Pointer to player
     TileMap* m_tileMap;                // Pointer to tile map
+    Logger m_log;
 public:
     // Creates game state and connects to game data
     GameState(GameDataRef data);

@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <SFML/Graphics.hpp> // Added for sf::RenderWindow
 
 // Struktura pojedynczego kafelka mapy
 struct Tile {
@@ -34,7 +35,7 @@ public:
     void saveToFile(const std::string& filename) const;
 
     // Renderuje mapę na ekranie
-    void render();
+    void render(sf::RenderWindow* window);
 
     // Zwraca szerokość mapy (w kafelkach)
     int getWidth() const;
