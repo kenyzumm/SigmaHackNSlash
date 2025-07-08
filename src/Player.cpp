@@ -28,11 +28,18 @@ void Player::init() {
     m_animation.setAnimation(AnimState::Idle); // Set the initial animation
 }
 
-// Handles keyboard input and sets the movement direction and jump
+// Handles keyboard input and sets the movement direction, jump, and dash
 void Player::handleInput() {
     // Direction: D (right) = 1, A (left) = -1, none = 0
     m_dirX = (int)(m_data->input.isKeyPressed(sf::Keyboard::Key::D)) -
              (int)(m_data->input.isKeyPressed(sf::Keyboard::Key::A));
+    
+    // Dash: only if moving left or right, and dash is available
+    if (m_data->input.isKeyJustPressed(sf::Keyboard::Key::LShift)) {
+        if (m_dirX != 0 && m_movement.canDash() && m_movement.getOnGround()) {
+            m_movement.startDash(m_dirX);
+        }
+    }
     
     // Handle jump and double jump with Space key (only on key press, not hold)
     if (m_data->input.isKeyJustPressed(sf::Keyboard::Key::Space)) {

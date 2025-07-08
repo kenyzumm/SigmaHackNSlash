@@ -4,12 +4,29 @@
 // Constructor: sets default physics parameters
 Movement::Movement()
     : velocityX(0), velocityY(0), acceleration(1000.0f), maxVelocity(300.0f), gravity(980.0f), friction(0.9f), jumpForce(400.0f), isOnGround(false),
-      canDoubleJump(true), hasDoubleJumped(false), doubleJumpForce(350.0f) {}
+      canDoubleJump(true), hasDoubleJumped(false), doubleJumpForce(350.0f),
+      isDashing(false), dashSpeed(700.0f), dashDuration(0.18f), dashTimer(0.0f), dashCooldown(1.5f), dashCooldownTimer(0.0f), dashDirection(0) {}
 
 Movement::~Movement() {}
 
-// Updates player velocity based on input, gravity, and friction
+// Updates player velocity based on input, gravity, friction, and dash
 void Movement::update(float dirX, float dt) {
+    // Handle dash cooldown timer
+    if (dashCooldownTimer > 0.0f) {
+        dashCooldownTimer -= dt;
+        if (dashCooldownTimer < 0.0f) dashCooldownTimer = 0.0f;
+    }
+    // Handle dash state
+    if (isDashing) {
+        dashTimer -= dt;
+        velocityX = dashDirection * dashSpeed;
+        velocityY = 0; // Optional: cancel vertical movement during dash
+        if (dashTimer <= 0.0f) {
+            isDashing = false;
+            dashCooldownTimer = dashCooldown;
+        }
+        return; // Skip normal movement while dashing
+    }
     // Horizontal movement: acceleration depends on input
     velocityX += acceleration * dirX * dt;
     if (velocityX > maxVelocity) velocityX = maxVelocity;
@@ -43,6 +60,25 @@ void Movement::doubleJump() {
         velocityY = -doubleJumpForce;
         hasDoubleJumped = true;
     }
+}
+
+// Initiate dash in a given direction (-1 for left, 1 for right)
+void Movement::startDash(int direction) {
+    if (!isDashing && dashCooldownTimer <= 0.0f && direction != 0) {
+        isDashing = true;
+        dashTimer = dashDuration;
+        dashDirection = direction;
+    }
+}
+
+// Returns if the player is currently dashing
+bool Movement::getIsDashing() const {
+    return isDashing;
+}
+
+// Returns if the player can dash (not on cooldown and not already dashing)
+bool Movement::canDash() const {
+    return (!isDashing && dashCooldownTimer <= 0.0f);
 }
 
 // Sets the flag indicating if the player is on the ground
