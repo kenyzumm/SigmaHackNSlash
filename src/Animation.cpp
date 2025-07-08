@@ -4,10 +4,7 @@
 Animation::Animation() : currentFrame(0), frameTime(0.1f), timer(0), currentAnimation(AnimState::Idle), m_sprite(nullptr), frameWidth(0), frameHeight(0), startX(0), startY(0) {}
 Animation::~Animation() {}
 
-// Connects a pointer to the sprite on which animation frames will be displayed
-void Animation::setSprite(sf::Sprite* sprite) {
-    m_sprite = sprite;
-}
+
 
 // Sets the frame size and the position of the first frame in the texture
 void Animation::setFrameData(int frameW, int frameH, int sX, int sY) {
@@ -78,10 +75,9 @@ bool Animation::isFinished() const {
 }
 
 // Returns the index of the current frame
-int Animation::getCurrentFrame() const {
-    return currentFrame;
-}
+int Animation::getCurrentFrame() const { return currentFrame; }
 
-AnimState Animation::getCurrentState() const {
-    return currentAnimation;
-}
+AnimState Animation::getCurrentState() const { return currentAnimation; }
+
+// Connects a pointer to the sprite on which animation frames will be displayed
+void Animation::setSprite(sf::Sprite* sprite) { m_sprite = sprite; }

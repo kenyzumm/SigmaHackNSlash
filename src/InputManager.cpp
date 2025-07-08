@@ -20,14 +20,10 @@ bool InputManager::isSpriteClicked(sf::Sprite &object, sf::Mouse::Button button,
 }
 
 // Returns the mouse position relative to the window
-sf::Vector2i InputManager::getMousePosition(sf::RenderWindow* window) {
-    return sf::Mouse::getPosition(*window);
-}
+sf::Vector2i InputManager::getMousePosition(sf::RenderWindow* window) { return sf::Mouse::getPosition(*window); }
 
 // Checks if a key is currently pressed
-bool InputManager::isKeyPressed(sf::Keyboard::Key key) {
-    return sf::Keyboard::isKeyPressed(key);
-}
+bool InputManager::isKeyPressed(sf::Keyboard::Key key) { return sf::Keyboard::isKeyPressed(key); }
 
 // Stores the previous state of keys (statically for the entire application)
 static std::unordered_map<sf::Keyboard::Key, bool> previousKeyState;

@@ -39,7 +39,5 @@ void StateMachine::processStateChanges() {
     }
 }
 // Returns a pointer to the active state (at the top of the stack)
-stateRef &StateMachine::getActiveState() {
-    return this->m_states.top();
-}
+stateRef &StateMachine::getActiveState() { return this->m_states.top(); }
 

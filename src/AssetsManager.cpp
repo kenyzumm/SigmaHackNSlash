@@ -34,6 +34,4 @@ sf::Texture &AssetsManager::getTexture(std::string name) {
 }
 
 // Returns a reference to the font with the given name
-sf::Font &AssetsManager::getFont(std::string name) {
-    return this->m_fonts[name];
-}
+sf::Font &AssetsManager::getFont(std::string name) { return this->m_fonts[name]; }

@@ -71,16 +71,6 @@ void Movement::startDash(int direction) {
     }
 }
 
-// Returns if the player is currently dashing
-bool Movement::getIsDashing() const {
-    return isDashing;
-}
-
-// Returns if the player can dash (not on cooldown and not already dashing)
-bool Movement::canDash() const {
-    return (!isDashing && dashCooldownTimer <= 0.0f);
-}
-
 // Sets the flag indicating if the player is on the ground
 void Movement::setOnGround(bool onGround) {
     isOnGround = onGround;
@@ -91,29 +81,25 @@ void Movement::setOnGround(bool onGround) {
 }
 
 // Returns if the player is on the ground
-bool Movement::getOnGround() const {
-    return isOnGround;
-}
+bool Movement::getOnGround() const { return isOnGround; }
 
 // Returns if the player can perform a double jump
-bool Movement::getCanDoubleJump() const {
-    return canDoubleJump;
-}
+bool Movement::getCanDoubleJump() const { return canDoubleJump; }
 
 // Returns if the player has already used their double jump
-bool Movement::getHasDoubleJumped() const {
-    return hasDoubleJumped;
-}
+bool Movement::getHasDoubleJumped() const { return hasDoubleJumped; }
 
 // Returns the velocity in the X axis
-float Movement::getVelocityX() const {
-    return velocityX;
-}
+float Movement::getVelocityX() const { return velocityX; }
 
 // Returns the velocity in the Y axis
-float Movement::getVelocityY() const {
-    return velocityY;
-}
+float Movement::getVelocityY() const { return velocityY; }
+
+// Returns if the player is currently dashing
+bool Movement::getIsDashing() const { return isDashing; }
+
+// Returns if the player can dash (not on cooldown and not already dashing)
+bool Movement::canDash() const { return (!isDashing && dashCooldownTimer <= 0.0f); }
 
 // Sets velocity directly (e.g., during collision)
 void Movement::setVelocity(float vx, float vy) {
