@@ -14,19 +14,16 @@ class Movement {
 public:
     Movement();
     ~Movement();
-    // Updates velocity based on input, gravity, and friction
-    void update(float dirX, float dt);
-    // Performs a jump if the player is on the ground
+
+    // Action
     void jump();
-    // Sets the flag indicating whether the player is on the ground
+    void update(float dirX, float dt);
+    // Setters
     void setOnGround(bool onGround);
-    // Returns whether the player is on the ground
-    bool getOnGround() const;
-    // Returns velocity in the X axis
-    float getVelocityX() const;
-    // Returns velocity in the Y axis
-    float getVelocityY() const;
-    // Sets velocity directly
     void setVelocity(float vx, float vy);
+    // Getters
+    bool getOnGround() const;
+    float getVelocityX() const;
+    float getVelocityY() const;
 };
 #endif

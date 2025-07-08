@@ -22,7 +22,6 @@ class Game {
     sf::Clock m_clock;             // Clock for measuring time
     GameDataRef m_data = std::make_shared<GameData>(); // Common game data
 public:
-    // Creates the game, initializes the window and states
     Game(int width, int height, std::string title);
     ~Game();
     // Runs the main game loop

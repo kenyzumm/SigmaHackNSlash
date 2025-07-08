@@ -1,9 +1,5 @@
 #include "AssetsManager.h"
 
-
-#include <iostream>
-
-// Constructor: initializes logger
 AssetsManager::AssetsManager() : m_log("AssetsManagerLogs.txt"){}
 AssetsManager::~AssetsManager() {}
 

@@ -13,14 +13,12 @@ class AssetsManager {
 public:
     AssetsManager();
     ~AssetsManager();
-    // Loads texture from file and saves it under a name
+    // Loaders
     void loadTexture(std::string name, std::string filename);
-    // Loads font from file and saves it under a name
     void loadFont(std::string name, std::string filename);
 
-    // Returns a reference to the font with the given name
+    // Getters
     sf::Font &getFont(std::string name);
-    // Returns a reference to the texture with the given name
     sf::Texture &getTexture(std::string name);
 };
 

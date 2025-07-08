@@ -23,20 +23,15 @@ public:
     Player(GameDataRef data);
     ~Player();
 
-    // Initializes the sprite, animations and resets player movement
     void init();
-    // Updates player state: movement, collisions, animation
+    // Action
     void update(float dt, TileMap* tileMap);
-    // Renders the player on the screen
     void render(float dt);
-
-    // Handles keyboard input and sets direction/jump
     void handleInput();
-    // Sets player position and resets speed
+    // Setters
     void setPosition(float x, float y);
-    // Returns the current X position of the player
+    // Getters
     float getX() const;
-    // Returns the current Y position of the player
     float getY() const;
 };
 #endif

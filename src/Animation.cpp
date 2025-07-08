@@ -81,7 +81,3 @@ bool Animation::isFinished() const {
 int Animation::getCurrentFrame() const {
     return currentFrame;
 }
-
-AnimState Animation::getCurrentState() const {
-    return currentAnimation;
-}

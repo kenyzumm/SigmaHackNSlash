@@ -11,17 +11,13 @@ class SplashState : public State {
     sf::Clock m_clock;                 // Clock to measure splash duration
     std::optional<sf::Sprite> m_background; // Splash screen background
 public:
-    // Creates splash state and connects to game data
     SplashState(GameDataRef data);
     ~SplashState();
 
-    // Initializes splash state (loading background)
     void init();
-    // Handles user input (e.g., closing window)
+    // Action
     void handleInput();
-    // Updates splash logic (proceeds after time)
     void update(float dt);
-    // Renders splash on screen
     void render(float dt);
 };
 

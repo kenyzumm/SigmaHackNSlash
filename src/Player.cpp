@@ -21,10 +21,10 @@ void Player::init() {
     }
     m_animation.setFrameData(64, 64, 0, 0); // Animation frame size
     // Add animations for different states
-    m_animation.addAnimation(AnimState::Idle, 2, 0, 0, 1.0f, 9);
+    m_animation.addAnimation(AnimState::Idle, 0, 0, 0, 1.0f, 9);
     m_animation.addAnimation(AnimState::Run, 3, 1, 8, 0.1f, 9);
     m_animation.addAnimation(AnimState::Jump, 2, 0, 0, 0.2f, 9);
-    m_animation.addAnimation(AnimState::Fall, 2, 0, 0, 0.2f, 9);
+    m_animation.addAnimation(AnimState::Fall, 1, 0, 0, 0.2f, 9);
     m_animation.setAnimation(AnimState::Idle); // Set the initial animation
 }
 
@@ -74,16 +74,12 @@ void Player::update(float dt, TileMap* tileMap) {
     // Select animation based on movement state and ground contact
     float vx = m_movement.getVelocityX();
     float vy = m_movement.getVelocityY();
-    AnimState newState;
     if (!m_movement.getOnGround()) {
-        newState = (vy < 0 ? AnimState::Jump : AnimState::Fall);
-    } else if (m_dirX != 0) {
-        newState = AnimState::Run;
+        m_animation.setAnimation(vy < 0 ? AnimState::Jump : AnimState::Fall); // Jump or fall
+    } else if (std::abs(vx) > 1.0f) {
+        m_animation.setAnimation(AnimState::Run); // Run
     } else {
-        newState = AnimState::Idle;
-    }
-    if (m_animation.getCurrentState() != newState) {
-        m_animation.setAnimation(newState);
+        m_animation.setAnimation(AnimState::Idle); // Idle
     }
     m_animation.update(dt); // Move to the next animation frame
 }

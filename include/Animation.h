@@ -36,23 +36,17 @@ public:
     Animation();
     ~Animation();
 
-    // Connects sprite to animation
+    // Setters
     void setSprite(sf::Sprite* sprite);
-    // Sets frame size and position
     void setFrameData(int frameW, int frameH, int startX, int startY);
-    // Adds animation for a given state (defines frame range and parameters)
-    void addAnimation(AnimState state, int row, int colStart, int colEnd, float frameTime, int numColumns);
-    // Sets the current animation (resets frame counter)
     void setAnimation(AnimState name);
-    // (Unused) Remnant from an earlier version
+    void addAnimation(AnimState state, int row, int colStart, int colEnd, float frameTime, int numColumns);
+
+    // Updating methods
     void play(float dt);
-    // Updates animation (changes frame if time has elapsed)
     void update(float dt);
-    // Checks if the animation has finished (returned to the beginning)
+    // Getters
     bool isFinished() const;
-    // Returns the index of the current frame
     int getCurrentFrame() const;
-    // Returns the current animation state
-    AnimState getCurrentState() const;
 };
 #endif
