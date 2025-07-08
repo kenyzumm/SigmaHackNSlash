@@ -31,7 +31,11 @@ public:
     // Setters
     void setPosition(float x, float y);
     // Getters
+    // Returns the current X position of the player
     float getX() const;
+    // Returns the current Y position of the player
     float getY() const;
+    // Returns if the player is currently moving
+    bool isMoving() const;
 };
 #endif

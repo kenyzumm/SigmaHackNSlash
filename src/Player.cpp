@@ -123,3 +123,5 @@ void Player::setPosition(float x, float y) {
 float Player::getX() const { return m_sprite ? m_sprite->getPosition().x : 0.f; }
 // Returns the current Y position of the player
 float Player::getY() const { return m_sprite ? m_sprite->getPosition().y : 0.f; }
+// Returns if the player is currently moving
+bool Player::isMoving() const { return m_isMoving; }
