@@ -20,7 +20,8 @@ set(SOURCES
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 # Link SFML libraries
-target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system)
+target_link_libraries(${PROJECT_NAME} PRIVATE
+        SFML::Graphics SFML::Window SFML::System)
 
 # Set target properties
 set_target_properties(${PROJECT_NAME} PROPERTIES

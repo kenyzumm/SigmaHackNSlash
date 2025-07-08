@@ -1,9 +1,12 @@
 #include "TileMap.h"
 #include <fstream>
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include "DEFINITIONS.h"
 
 TileMap::TileMap(int width, int height, int tileSize)
     : width(width), height(height), tileSize(tileSize), layers(1) {
-    tiles.resize(height, std::vector<Tile>(width, {0, false}));
+    tiles.resize(height, std::vector<Tile>(width, {TILE_EMPTY, false}));
 }
 
 TileMap::~TileMap() {}
@@ -58,7 +61,24 @@ void TileMap::saveToFile(const std::string& filename) const {
 }
 
 void TileMap::render() {
-    // Tu powinno być rysowanie mapy
+    // Rysuj tylko kafelki różne od TILE_EMPTY
+    sf::RenderWindow* window = nullptr;
+    // Spróbuj znaleźć okno globalnie (przykładowo przez singleton lub przekazać przez parametr w przyszłości)
+    // Tu uproszczone założenie:
+    extern sf::RenderWindow* g_window;
+    window = g_window;
+    if (!window) return;
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            if (tiles[y][x].id != TILE_EMPTY) {
+                sf::RectangleShape rect(sf::Vector2f(tileSize, tileSize));
+                rect.setPosition(sf::Vector2f(x * tileSize, y * tileSize));
+                if (tiles[y][x].id == TILE_SOLID) rect.setFillColor(sf::Color::Red);
+                else rect.setFillColor(sf::Color(200, 200, 200));
+                window->draw(rect);
+            }
+        }
+    }
 }
 
 void TileMap::update(float dt) {

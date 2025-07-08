@@ -1,7 +1,6 @@
 #include "StateMachine.h"
-#include "DEFINITIONS.h"
 
-StateMachine::StateMachine() : m_log(LOG_FILEPATH) {}
+StateMachine::StateMachine() : m_log("StateMachineLogs.txt") {}
 
 void StateMachine::addState(stateRef newState, bool isReplacing) {
     this->m_isAdding = true;
@@ -14,7 +13,7 @@ void StateMachine::removeState() {
 void StateMachine::processStateChanges() {
     if (this->m_isRemoving && !this->m_states.empty()) {
         this->m_states.pop();
-        m_log.log(Logger::Level::DEBUG, "StateMachine: State removed");
+        LOG_DEBUG(m_log, "State removed");
         if (!this->m_states.empty()) {
             this->m_states.top()->resume();
         }
@@ -24,13 +23,13 @@ void StateMachine::processStateChanges() {
         if (!this->m_states.empty()) {
             if (this->m_isReplacing) {
                 this->m_states.pop();
-                m_log.log(Logger::Level::DEBUG, "StateMachine: State removed to be replaced");
+                LOG_DEBUG(m_log, "State removed to be replaced");
             } else {
                 this->m_states.top()->pause();
             }
         }
         this->m_states.push(std::move(this->m_newState));
-        m_log.log(Logger::Level::DEBUG, "StateMachine: State added");
+        LOG_DEBUG(m_log, "State added");
         this->m_states.top()->init();
         this->m_isAdding = false;
     }

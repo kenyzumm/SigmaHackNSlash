@@ -1,11 +1,14 @@
 #include "GameState.h"
-
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <iostream>
 GameState::GameState(GameDataRef data) : m_data(data), m_player(nullptr) {}
 
 GameState::~GameState() {
     delete m_player;
     delete m_tileMap;
 }
+
+sf::RenderWindow* g_window = nullptr;
 
 void GameState::init() {
     // Load background
@@ -18,12 +21,20 @@ void GameState::init() {
     // Initialize player
     m_player = new Player(m_data);
     m_tileMap = new TileMap(100, 100, 32);
+    g_window = m_data->window;
+
+    // Dodaj prosty "grunt" pod graczem
+    for (int x = 3; x <= 6; ++x) {
+        m_tileMap->setTile(x, 7, TILE_SOLID, true);
+    }
+    // Ustaw gracza dokładnie nad kafelkiem (środek dolnej krawędzi sprite'a na środku kafelka 4,7)
+    float tileSize = 32.f;
+    float spriteHeight = 64.f;
+    float playerX = (4 + 0.5f) * tileSize;
+    float playerY = (7 + 1) * tileSize - (spriteHeight - tileSize);
+    if (m_player) m_player->setPosition(playerX, playerY);
+    std::cout << "Player start pos: x=" << playerX << " y=" << playerY << std::endl;
     m_player->init();
-    
-    
-       
-    // Initialize tile map (simple ground for now)
- 
 }   
 
 void GameState::handleInput() {
@@ -41,13 +52,13 @@ void GameState::handleInput() {
 }
 
 void GameState::update(float dt) {
-    if (m_player) m_player->update(dt);
+    if (m_player) m_player->update(dt, m_tileMap);
 }
 
 void GameState::render(float dt) {
     m_data->window->clear();
-    
-    // Draw background
+    if (m_tileMap) m_tileMap->render();
+    // Draw background (za gruntem)
     if (m_background.has_value()) {
         m_data->window->draw(*m_background);
     }

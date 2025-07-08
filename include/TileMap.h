@@ -10,7 +10,6 @@ struct Tile {
 };
 
 class TileMap {
-private:
     int width, height;           // liczba kafelków w poziomie i pionie
     int tileSize;                // rozmiar pojedynczego kafelka (np. 32x32 px)
     std::vector<std::vector<Tile>> tiles; // dwuwymiarowa tablica przechowująca ID kafelków

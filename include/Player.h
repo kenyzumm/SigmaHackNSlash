@@ -6,6 +6,7 @@
 #include "Game.h"
 #include <SFML/Graphics/Sprite.hpp>
 #include <optional>
+#include <TileMap.h>
 
 class Player {
 private:
@@ -17,7 +18,7 @@ private:
 
     float m_dirX, m_dirY;
     bool m_isMoving;
-    std::string m_state; // np. "idle", "run", "jump"
+    AnimState m_state;
 
     std::optional<sf::Sprite> m_sprite;
 
@@ -28,7 +29,7 @@ public:
     ~Player();
 
     void init();
-    void update(float dt);
+    void update(float dt, TileMap* tileMap);
     void render(float dt);
 
     void handleInput();

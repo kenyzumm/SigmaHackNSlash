@@ -10,7 +10,14 @@ struct AnimationData {
     int startFrame;
     int endFrame;
     float frameTime;
+    int row;
+    int colStart;
+    int colEnd;
+    int numColumns;
 };
+
+// Wspólny enum dla stanu gracza i animacji
+enum class AnimState { Idle, Run, Jump, Fall };
 
 class Animation {
 private:
@@ -19,8 +26,8 @@ private:
     float frameTime;
     float timer;
 
-    std::map<std::string, AnimationData> animations;
-    std::string currentAnimation;
+    std::map<AnimState, AnimationData> animations;
+    AnimState currentAnimation;
     bool playing;
 
     sf::Sprite* m_sprite; // wskaźnik na sprite
@@ -33,8 +40,8 @@ public:
 
     void setSprite(sf::Sprite* sprite);
     void setFrameData(int frameW, int frameH, int startX, int startY);
-    void addAnimation(const std::string& name, int startFrame, int endFrame, float frameTime);
-    void setAnimation(const std::string& name);
+    void addAnimation(AnimState state, int row, int colStart, int colEnd, float frameTime, int numColumns);
+    void setAnimation(AnimState name);
     void play(float dt);
     void update(float dt);
     bool isFinished() const;
