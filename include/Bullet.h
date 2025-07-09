@@ -3,6 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 
+// Forward declaration to avoid circular dependency
+class TileMap;
+
 class Bullet {
     sf::CircleShape m_shape;
     sf::Vector2f m_position;
@@ -21,6 +24,10 @@ class Bullet {
         void setPosition(const sf::Vector2f& pos) { m_position = pos; m_shape.setPosition(pos); }
         void setVelocity(const sf::Vector2f& vel) { m_velocity = vel; }
         sf::Vector2f getPosition() const { return m_position; }
+        
+        // New methods for collision detection with tile map
+        bool checkTileCollision(const TileMap* tileMap) const;
+        sf::FloatRect getBounds() const;
 };
 
 #endif // BULLET_H

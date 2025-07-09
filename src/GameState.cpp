@@ -117,14 +117,17 @@ void GameState::update(float dt) {
     if (m_player) m_player->update(dt, m_tileMap);
     if (m_hud) m_hud->update(dt);
 
-    // Aktualizacja pocisków i usuwanie tych poza ekranem
+    // Update bullets and remove those that go off screen OR hit solid tiles
     auto it = m_bullets.begin();
     sf::Vector2u winSize = m_data->window->getSize();
     while (it != m_bullets.end()) {
         Bullet* bullet = *it;
         bullet->update(dt);
         sf::Vector2f pos = bullet->getPosition();
-        if (pos.x < 0 || pos.x > winSize.x || pos.y < 0 || pos.y > winSize.y) {
+        
+        // Remove bullets that go off screen boundaries OR hit solid tiles
+        if (pos.x < 0 || pos.x > winSize.x || pos.y < 0 || pos.y > winSize.y || 
+            bullet->checkTileCollision(m_tileMap)) {
             delete bullet;
             it = m_bullets.erase(it);
         } else {
