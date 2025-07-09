@@ -29,14 +29,20 @@ void Player::init() {
 }
 
 // Handles keyboard input and sets the movement direction, jump, and dash
+/**
+ * Handles keyboard input for movement, jumping, double jumping, and dashing.
+ * Dash can now be performed both on the ground and in the air, but is always limited by the dash cooldown.
+ * The player must be moving left or right (A or D) and dash is only triggered on LShift key press.
+ * Jump and double jump logic is unchanged.
+ */
 void Player::handleInput() {
     // Direction: D (right) = 1, A (left) = -1, none = 0
     m_dirX = (int)(m_data->input.isKeyPressed(sf::Keyboard::Key::D)) -
              (int)(m_data->input.isKeyPressed(sf::Keyboard::Key::A));
     
-    // Dash: only if moving left or right, and dash is available
+    // Dash: only if moving left or right, and dash is available (ground or air)
     if (m_data->input.isKeyJustPressed(sf::Keyboard::Key::LShift)) {
-        if (m_dirX != 0 && m_movement.canDash() && m_movement.getOnGround()) {
+        if (m_dirX != 0 && m_movement.canDash()) {
             m_movement.startDash(m_dirX);
         }
     }
