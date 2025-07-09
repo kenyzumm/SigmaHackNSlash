@@ -16,6 +16,7 @@ set(SOURCES
     Movement.cpp
     TileMap.cpp
     HUD.cpp
+    Bullet.cpp
 )
 
 add_executable(SigmaHackNSlash ${SOURCES})

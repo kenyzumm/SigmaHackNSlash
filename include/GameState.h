@@ -8,6 +8,7 @@
 #include "TileMap.h"
 #include "Logger.h"
 #include "HUD.h"
+#include "Bullet.h"
 
 // Game state (gameplay)
 class GameState : public State {
@@ -18,6 +19,7 @@ class GameState : public State {
     TileMap* m_tileMap;                // Pointer to tile map
     HUD* m_hud;                        // Pointer to HUD
     Logger m_log;
+    std::vector<Bullet*> m_bullets; // Kontener na wskaźniki do pocisków
 public:
     // Creates game state and connects to game data
     GameState(GameDataRef data);

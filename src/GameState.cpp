@@ -1,6 +1,7 @@
 #include "GameState.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <iostream>
+#include <cmath>
 
 // Constructor: initializes player and map pointers
 GameState::GameState(GameDataRef data) : m_data(data), m_player(nullptr), m_log("GameStateLogs.txt") {}
@@ -9,6 +10,11 @@ GameState::~GameState() {
     delete m_player;
     delete m_tileMap;
     delete m_hud;
+    // Usuwanie wszystkich pocisków
+    for (auto bullet : m_bullets) {
+        delete bullet;
+    }
+    m_bullets.clear();
 }
 
 // Initializes game state: loads background, textures, creates player and map, sets initial position
@@ -31,7 +37,6 @@ void GameState::init() {
         LOG_ERROR(m_log, "Failed to create tile map");
     }
 
-
     // DEBUG
     // Add a simple "ground" under the player
     for (int x = 3; x <= 9; ++x) {
@@ -48,6 +53,9 @@ void GameState::init() {
     m_player->init();
 }   
 
+// Flaga do wykrywania pojedynczego kliknięcia myszy
+static bool wasMousePressedLastFrame = false;
+
 // Handles user input (closing window)
 void GameState::handleInput() {
     while (const std::optional<sf::Event> event = this->m_data->window->pollEvent()) {
@@ -58,22 +66,49 @@ void GameState::handleInput() {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Backspace)) {
         this->m_data->window->close();
     }
+    // Strzał pociskiem tylko na jedBullet::Bullet() {
+    m_shape.setRadius(5);
+    m_shape.setFillColor(sf::Color::White);
+    m_shape.setPosition({0, 0});
+    m_speed = 1000;
+    m_direction = 0;
+    m_damage = 10;
+    m_range = 1000;
+}et(playerPos, velocity));
+    }
+    wasMousePressedLastFrame = isMousePressed;
 }
 
 // Updates game logic: calls player and map updates
 void GameState::update(float dt) {
     if (m_player) m_player->update(dt, m_tileMap);
     if (m_hud) m_hud->update(dt);
-}
 
-// Renders background, map, and player to the screen
-void GameState::render(float dt) {
-    m_data->window->clear();
-    if (m_tileMap) m_tileMap->render(m_data->window);
+    // Aktualizacja pocisków i usuwanie tych poza ekranem
+    auto it = m_bullets.begin();
+    sf::Vector2u winSize = m_data->window->getSize();
+    while (it != m_bullets.end()) {
+        Bullet* bullet = *it;
+        bullet->update(dt);
+        sf::Vector2f pos = bullet->getBullet::Bullet() {
+            m_shape.setRadius(5);
+            m_shape.setFillColor(sf::Color::White);
+            m_shape.setPosition({0, 0});
+            m_speed = 1000;
+            m_direction = 0;
+            m_damage = 10;
+            m_range = 1000;
+        }_data->window);
     /*if (m_background.has_value()) {
         m_data->window->draw(*m_background);
     }
     */
+
+    // Rysowanie pocisków
+    for (auto bullet : m_bullets) {
+        bullet->draw(m_data->window);
+    }
+
     if (m_player) m_player->render(dt);
     if (m_hud) m_hud->draw();
     m_data->window->display();
