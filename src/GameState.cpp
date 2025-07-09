@@ -51,7 +51,7 @@ void GameState::init() {
     float playerY = 7 * tileSize; // Top of tile 7 (sprite origin is at bottom)
     if (m_player) m_player->setPosition(playerX, playerY);
     m_player->init();
-}   
+}
 
 // Flaga do wykrywania pojedynczego kliknięcia myszy
 static bool wasMousePressedLastFrame = false;
@@ -66,15 +66,18 @@ void GameState::handleInput() {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Backspace)) {
         this->m_data->window->close();
     }
-    // Strzał pociskiem tylko na jedBullet::Bullet() {
-    m_shape.setRadius(5);
-    m_shape.setFillColor(sf::Color::White);
-    m_shape.setPosition({0, 0});
-    m_speed = 1000;
-    m_direction = 0;
-    m_damage = 10;
-    m_range = 1000;
-}et(playerPos, velocity));
+    // Strzał pociskiem tylko na jedno kliknięcie LPM
+    bool isMousePressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
+    if (isMousePressed && !wasMousePressedLastFrame && m_player) {
+        sf::Vector2f playerPos(m_player->getX(), m_player->getY());
+        sf::Vector2i mousePixel = sf::Mouse::getPosition(*m_data->window);
+        sf::Vector2f mouseWorld = m_data->window->mapPixelToCoords(mousePixel);
+        sf::Vector2f direction = mouseWorld - playerPos;
+        float len = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+        if (len > 0.01f) direction /= len;
+        float bulletSpeed = 1000.f;
+        sf::Vector2f velocity = direction * bulletSpeed;
+        m_bullets.push_back(new Bullet(playerPos, velocity));
     }
     wasMousePressedLastFrame = isMousePressed;
 }
@@ -90,25 +93,28 @@ void GameState::update(float dt) {
     while (it != m_bullets.end()) {
         Bullet* bullet = *it;
         bullet->update(dt);
-        sf::Vector2f pos = bullet->getBullet::Bullet() {
-            m_shape.setRadius(5);
-            m_shape.setFillColor(sf::Color::White);
-            m_shape.setPosition({0, 0});
-            m_speed = 1000;
-            m_direction = 0;
-            m_damage = 10;
-            m_range = 1000;
-        }_data->window);
+        sf::Vector2f pos = bullet->getPosition();
+        if (pos.x < 0 || pos.x > winSize.x || pos.y < 0 || pos.y > winSize.y) {
+            delete bullet;
+            it = m_bullets.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+
+// Renders background, map, bullets, and player to the screen
+void GameState::render(float dt) {
+    m_data->window->clear();
+    if (m_tileMap) m_tileMap->render(m_data->window);
     /*if (m_background.has_value()) {
         m_data->window->draw(*m_background);
     }
     */
-
     // Rysowanie pocisków
     for (auto bullet : m_bullets) {
         bullet->draw(m_data->window);
     }
-
     if (m_player) m_player->render(dt);
     if (m_hud) m_hud->draw();
     m_data->window->display();

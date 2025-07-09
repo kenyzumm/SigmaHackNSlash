@@ -16,6 +16,7 @@
 - **Tile Map**: Tile-based map system with 32x32 pixel tiles and collision detection
 - **Animations**: Animation system for different player states (idle, run, jump, fall)
 - **Collision System**: Precise collision detection with tile-based environment
+  - **Bullet System**: Player can shoot bullets towards the mouse cursor by clicking the left mouse button. Bullets are removed automatically when they leave the screen.
 
 ### 🛠️ Technical Systems
 - **Resource Management**: Central system for loading textures and sounds
@@ -244,6 +245,16 @@ Tile-based map system:
 - **Cooldown**: 1.5 seconds between dashes
 - **Duration**: 0.18 seconds of dash movement
 - **Speed**: 700 pixels per second during dash
+
+## Bullet System (Shooting)
+
+The player can attack by shooting bullets:
+
+- **How to shoot:** Click the left mouse button to fire a bullet from the player towards the mouse cursor.
+- **Single shot per click:** Only one bullet is fired per mouse click (holding the button does not shoot continuously).
+- **Bullet removal:** Bullets are automatically removed from memory when they leave the visible game screen.
+
+This system is implemented for performance and memory safety. If you want to add bullet collision or special effects, see the `GameState` and `Bullet` classes.
 
 ## Development
 
