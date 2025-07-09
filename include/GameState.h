@@ -33,6 +33,11 @@ public:
     void update(float dt);
     // Renders game on screen
     void render(float dt);
+    /**
+     * @brief Generates a more complex map layout with multiple platforms, gaps, and obstacles.
+     * This function is called during initialization to procedurally create a varied level.
+     */
+    void generateMap();
 };
 
 #endif //GAMESTATE_H

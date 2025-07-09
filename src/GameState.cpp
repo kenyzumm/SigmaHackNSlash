@@ -37,20 +37,50 @@ void GameState::init() {
         LOG_ERROR(m_log, "Failed to create tile map");
     }
 
-    // DEBUG
-    // Add a simple "ground" under the player
-    for (int x = 3; x <= 9; ++x) {
-        m_tileMap->setTile(x, 7, TILE_SOLID, true);
-    }
-    for (int x = 3; x <= 9; ++x) {
-        m_tileMap->setTile(x, 10, TILE_SOLID, true);
-    }
+    // Generate a more complex map layout
+    generateMap();
+
     // Set the player exactly on the tile (since sprite origin is at bottom center)
     float tileSize = 32.f;
     float playerX = (4 + 0.5f) * tileSize; // Center of tile 4
     float playerY = 7 * tileSize; // Top of tile 7 (sprite origin is at bottom)
     if (m_player) m_player->setPosition(playerX, playerY);
     m_player->init();
+}
+
+/**
+ * @brief Generates a more complex map layout with multiple platforms, gaps, and obstacles.
+ * This function creates several platforms at different heights, adds gaps (holes), and vertical columns as obstacles.
+ * It demonstrates how to procedurally generate a simple but varied level for the player to traverse.
+ * All tiles are set using setTile(x, y, TILE_SOLID, true).
+ */
+void GameState::generateMap() {
+    if (!m_tileMap) return;
+    // Main ground platform (with gaps)
+    for (int x = 0; x < 20; ++x) {
+        if (x == 5 || x == 12) continue; // Create gaps at x=5 and x=12
+        m_tileMap->setTile(x, 15, TILE_SOLID, true);
+    }
+    // Floating platform 1
+    for (int x = 3; x < 8; ++x) {
+        m_tileMap->setTile(x, 10, TILE_SOLID, true);
+    }
+    // Floating platform 2 (with a gap)
+    for (int x = 12; x < 18; ++x) {
+        if (x == 15) continue; // Gap at x=15
+        m_tileMap->setTile(x, 7, TILE_SOLID, true);
+    }
+    // Small column obstacles
+    for (int y = 14; y > 12; --y) {
+        m_tileMap->setTile(9, y, TILE_SOLID, true);
+    }
+    for (int y = 14; y > 11; --y) {
+        m_tileMap->setTile(17, y, TILE_SOLID, true);
+    }
+    // Stairs
+    for (int i = 0; i < 4; ++i) {
+        m_tileMap->setTile(20 + i, 15 - i, TILE_SOLID, true);
+    }
 }
 
 // Flaga do wykrywania pojedynczego kliknięcia myszy

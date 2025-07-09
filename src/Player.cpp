@@ -55,53 +55,109 @@ void Player::handleInput() {
 
 // Updates the player's state: movement, collisions, animation
 void Player::update(float dt, TileMap* tileMap) {
-    handleInput(); // First handle input
-    m_isMoving = (m_dirX != 0.0f); // Is the player moving
-    m_movement.update(m_dirX, dt); // Update player movement physics
+    handleInput();
+    m_isMoving = (m_dirX != 0.0f);
+    m_movement.update(m_dirX, dt);
 
-    
     if (m_sprite) {
-        // Move the sprite based on velocity
         sf::Vector2f pos = m_sprite->getPosition();
-        pos.x += m_movement.getVelocityX() * dt;
-        pos.y += m_movement.getVelocityY() * dt;
-        // Check for collisions with tiles below
+        float vx = m_movement.getVelocityX();
+        float vy = m_movement.getVelocityY();
+        float nextX = pos.x;
+        float nextY = pos.y;
+        int tileSize = tileMap ? tileMap->getTileSize() : 32;
+        float playerWidth = 64.f;
+        float playerHeight = 64.f;
+        float left, right, top, bottom;
+        // --- Vertical movement and collision (Y axis) ---
+        nextY += vy * dt;
+        left = nextX - playerWidth / 2.f;
+        right = nextX + playerWidth / 2.f;
+        top = nextY - playerHeight;
+        bottom = nextY;
         if (tileMap) {
-            int tileSize = tileMap->getTileSize();
-            // Check collision below the player (at the feet)
-            // Since sprite origin is at bottom center, pos.y is already at feet level
-            float feetY = pos.y;
-            int tileX = static_cast<int>(pos.x / tileSize);
-            int tileY = static_cast<int>(feetY / tileSize);
-            
-            if (tileMap->isCollidable(tileX, tileY)) {
-                // If there is a collidable tile below, stop falling
-                m_movement.setVelocity(m_movement.getVelocityX(), 0);
-                m_movement.setOnGround(true);
-            } else {
-                m_movement.setOnGround(false);
+            // Sprawdzaj 3 punkty: lewy, środek, prawy
+            float pointsX[3] = {left + 1, nextX, right - 1};
+            if (vy > 0) { // Falling
+                int tileY = static_cast<int>(bottom / tileSize);
+                for (float px : pointsX) {
+                    int tileX = static_cast<int>(px / tileSize);
+                    if (tileMap->isCollidable(tileX, tileY)) {
+                        nextY = tileY * tileSize;
+                        vy = 0;
+                        break;
+                    }
+                }
+            } else if (vy < 0) { // Jumping
+                int tileY = static_cast<int>((top) / tileSize);
+                for (float px : pointsX) {
+                    int tileX = static_cast<int>(px / tileSize);
+                    if (tileMap->isCollidable(tileX, tileY)) {
+                        nextY = (tileY + 1) * tileSize + playerHeight;
+                        vy = 0;
+                        break;
+                    }
+                }
             }
         }
-        // Set the sprite scale (mirror reflection) based on direction
-        float vx = m_movement.getVelocityX();
+        // --- Horizontal movement and collision (X axis) ---
+        nextX += vx * dt;
+        left = nextX - playerWidth / 2.f;
+        right = nextX + playerWidth / 2.f;
+        top = nextY - playerHeight;
+        bottom = nextY;
+        if (tileMap) {
+            if (vx > 0) { // Moving right
+                int tileX = static_cast<int>((right) / tileSize);
+                int tileYTop = static_cast<int>((top + 1) / tileSize);
+                int tileYBottom = static_cast<int>((bottom - 1) / tileSize);
+                if (tileMap->isCollidable(tileX, tileYTop) || tileMap->isCollidable(tileX, tileYBottom)) {
+                    nextX = tileX * tileSize - playerWidth / 2.f;
+                    vx = 0;
+                }
+            } else if (vx < 0) { // Moving left
+                int tileX = static_cast<int>((left) / tileSize);
+                int tileYTop = static_cast<int>((top + 1) / tileSize);
+                int tileYBottom = static_cast<int>((bottom - 1) / tileSize);
+                if (tileMap->isCollidable(tileX, tileYTop) || tileMap->isCollidable(tileX, tileYBottom)) {
+                    nextX = (tileX + 1) * tileSize + playerWidth / 2.f;
+                    vx = 0;
+                }
+            }
+        }
+        // --- Check if player is on ground (after all movement) ---
+        bool onGround = false;
+        if (tileMap) {
+            float feetY = nextY + 1; // 1px below feet
+            float pointsX[3] = {nextX - playerWidth / 2.f + 1, nextX, nextX + playerWidth / 2.f - 1};
+            int tileY = static_cast<int>(feetY / tileSize);
+            for (float px : pointsX) {
+                int tileX = static_cast<int>(px / tileSize);
+                if (tileMap->isCollidable(tileX, tileY)) {
+                    onGround = true;
+                    break;
+                }
+            }
+        }
+        m_movement.setVelocity(vx, vy);
+        m_movement.setOnGround(onGround);
         m_sprite->setScale({vx < 0 ? -1.f : 1.f, 1.f});
-        m_sprite->setPosition(pos);
+        m_sprite->setPosition({nextX, nextY});
     }
-    // Select animation based on movement state and ground contact
+    // --- Animation state selection ---
     float vx = m_movement.getVelocityX();
     float vy = m_movement.getVelocityY();
     AnimState newState;
-    if (!m_movement.getOnGround()) {
-        newState = (vy < 0 ? AnimState::Jump : AnimState::Fall);
-    } else if (m_dirX != 0) {
-        newState = AnimState::Run;
+    if (m_movement.getOnGround()) {
+        if (m_isMoving) newState = AnimState::Run;
+        else newState = AnimState::Idle;
     } else {
-        newState = AnimState::Idle;
+        newState = (vy < 0 ? AnimState::Jump : AnimState::Fall);
     }
     if (m_animation.getCurrentState() != newState) {
         m_animation.setAnimation(newState);
     }
-    m_animation.update(dt); // Move to the next animation frame
+    m_animation.update(dt);
 }
 
 // Renders the player sprite on the screen
