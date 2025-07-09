@@ -42,6 +42,7 @@ void GameState::init() {
     float playerY = 7 * tileSize; // Top of tile 7 (sprite origin is at bottom)
     if (m_player) m_player->setPosition(playerX, playerY);
     m_player->init();
+
 }   
 
 // Handles user input (closing window)

@@ -8,7 +8,7 @@ void AssetsManager::loadTexture(std::string name, std::string filename) {
     sf::Texture texture;
     if (texture.loadFromFile(filename)) {
         this->m_textures[name] = texture; // Add texture to map
-        LOG_DEBUG(m_log, "Texture \"" + name + "\" successfully loaded");
+        LOG_DEBUG(m_log, "Texture \"" + name + "\" successfully loaded from " + filename);
     } else {
         LOG_ERROR(m_log, "Texture \"" + name + "\" not loaded");
     }

@@ -1,4 +1,5 @@
-# Collect all source files
+# CMakeLists.txt for src/
+
 set(SOURCES
     main.cpp
     Game.cpp
@@ -16,45 +17,16 @@ set(SOURCES
     TileMap.cpp
 )
 
-# Create executable
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(SigmaHackNSlash ${SOURCES})
 
-# Link SFML libraries
-target_link_libraries(${PROJECT_NAME} PRIVATE
-        SFML::Graphics SFML::Window SFML::System)
+# Include headers from ../include
+# (CMAKE_CURRENT_SOURCE_DIR is src/)
+target_include_directories(SigmaHackNSlash PRIVATE ${CMAKE_SOURCE_DIR}/include)
 
-# Set target properties
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    OUTPUT_NAME "SigmaHackNSlash"
-    DEBUG_POSTFIX "_d"
-)
+# Link SFML (inherited from parent)
+target_link_libraries(SigmaHackNSlash PRIVATE SFML::Graphics SFML::Window SFML::System)
 
-# Include directories for this target
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include)
-
-# Platform specific settings
-if(WIN32)
-    # Copy SFML DLLs to output directory on Windows
-    if(SFML_FOUND)
-        foreach(SFML_LIB ${SFML_LIBRARIES})
-            add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                $<TARGET_FILE:${SFML_LIB}>
-                $<TARGET_FILE_DIR:${PROJECT_NAME}>
-            )
-        endforeach()
-    endif()
-endif()
-
-# Install rules
-install(TARGETS ${PROJECT_NAME}
-    RUNTIME DESTINATION bin
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
-)
-
-# Install resources
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/resources
-    DESTINATION bin
-    FILES_MATCHING PATTERN "*"
+# Set output directory for this target
+set_target_properties(SigmaHackNSlash PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
 ) 
