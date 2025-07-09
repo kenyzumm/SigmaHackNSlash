@@ -22,7 +22,7 @@ void HUD::update(float dt) {
 
     sf::Sprite healthHearth(m_data->assets.getTexture("HUD Hearth"));
     for(int i=0; i<5; i++) {
-        healthHearth.setPosition({10 + i*64, 10});
+        healthHearth.setPosition(sf::Vector2f(10 + i*64, 10));
         m_healthHearthVector.push_back(healthHearth);
     }
 }

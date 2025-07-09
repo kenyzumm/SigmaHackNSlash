@@ -69,7 +69,7 @@ void GameState::handleInput() {
     // Strzał pociskiem tylko na jedno kliknięcie LPM
     bool isMousePressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
     if (isMousePressed && !wasMousePressedLastFrame && m_player) {
-        sf::Vector2f playerPos(m_player->getX(), m_player->getY());
+        sf::Vector2f playerPos(m_player->getX(), m_player->getY() - 32);
         sf::Vector2i mousePixel = sf::Mouse::getPosition(*m_data->window);
         sf::Vector2f mouseWorld = m_data->window->mapPixelToCoords(mousePixel);
         sf::Vector2f direction = mouseWorld - playerPos;
