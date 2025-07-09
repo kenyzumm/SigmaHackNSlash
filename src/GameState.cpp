@@ -48,12 +48,6 @@ void GameState::init() {
     m_player->init();
 }
 
-/**
- * @brief Generates a more complex map layout with multiple platforms, gaps, and obstacles.
- * This function creates several platforms at different heights, adds gaps (holes), and vertical columns as obstacles.
- * It demonstrates how to procedurally generate a simple but varied level for the player to traverse.
- * All tiles are set using setTile(x, y, TILE_SOLID, true).
- */
 void GameState::generateMap() {
     if (!m_tileMap) return;
     // Main ground platform (with gaps)
