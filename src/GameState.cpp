@@ -8,6 +8,7 @@ GameState::GameState(GameDataRef data) : m_data(data), m_player(nullptr), m_log(
 GameState::~GameState() {
     delete m_player;
     delete m_tileMap;
+    delete m_hud;
 }
 
 // Initializes game state: loads background, textures, creates player and map, sets initial position
@@ -15,9 +16,12 @@ void GameState::init() {
     m_data->assets.loadTexture("GameState Background", GAMESTATE_BACKGROUND_PATH);
     m_background = sf::Sprite(this->m_data->assets.getTexture("GameState Background"));
     m_data->assets.loadTexture("Player", PLAYER_TEXTURE_PATH);
+    m_data->assets.loadTexture("HUD Hearth", HUD_HEALTH_BAR_PATH);
+    m_data->assets.loadFont("Arial", ARIAL_FONT_PATH);
 
     m_player = new Player(m_data);
     m_tileMap = new TileMap(100, 100, 32);
+    m_hud = new HUD(m_data);
 
     // Error handling if m_player or m_tilemap are nullptr
     if (!m_player) {
@@ -34,7 +38,7 @@ void GameState::init() {
         m_tileMap->setTile(x, 7, TILE_SOLID, true);
     }
     for (int x = 3; x <= 9; ++x) {
-        m_tileMap->setTile(x, 12, TILE_SOLID, true);
+        m_tileMap->setTile(x, 10, TILE_SOLID, true);
     }
     // Set the player exactly on the tile (since sprite origin is at bottom center)
     float tileSize = 32.f;
@@ -59,16 +63,19 @@ void GameState::handleInput() {
 // Updates game logic: calls player and map updates
 void GameState::update(float dt) {
     if (m_player) m_player->update(dt, m_tileMap);
+    if (m_hud) m_hud->update(dt);
 }
 
 // Renders background, map, and player to the screen
 void GameState::render(float dt) {
     m_data->window->clear();
     if (m_tileMap) m_tileMap->render(m_data->window);
-    if (m_background.has_value()) {
+    /*if (m_background.has_value()) {
         m_data->window->draw(*m_background);
     }
+    */
     if (m_player) m_player->render(dt);
+    if (m_hud) m_hud->draw();
     m_data->window->display();
 }
 

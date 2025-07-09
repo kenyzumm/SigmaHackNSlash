@@ -5,15 +5,19 @@
 #define LOG_FILEPATH "../log.txt"
 
 // Paths to graphical resources
-#define SPLASHSTATE_BACKGROUND_PATH             "../../resources/background_splash.png" // Splash screen background
-#define SPLASHSTATE_TITLE_PATH                 "../../resources/splash_title.png"
+#define SPLASHSTATE_BACKGROUND_PATH             "../../resources/textures/background_splash.png" // Splash screen background
+#define SPLASHSTATE_TITLE_PATH                 "../../resources/textures/splash_title.png"
 #define SPLASHSTATE_SHOWTIME 3.0f // Splash screen display time
-#define MAINMENU_BACKGROUND_PATH                "../../resources/background_splash.png" // Main menu background
-#define MAINMENU_TITLE_PATH                     "../../resources/splash_title.png" // Game title
-#define MAINMENU_PLAYBUTTON_PATH                "../../resources/background_splash.png" // Play button
-#define GAMESTATE_BACKGROUND_PATH               "../../resources/background_splash.png" // Game background
-#define PLAYER_TEXTURE_PATH                     "../../resources/BODY_male.png" // Player texture
-#define BODY_MALE_TEXTURE_PATH                  "../../resources/BODY_male.png" // Alternative player texture
+#define MAINMENU_BACKGROUND_PATH                "../../resources/textures/background_splash.png" // Main menu background
+#define MAINMENU_TITLE_PATH                     "../../resources/textures/splash_title.png" // Game title
+#define MAINMENU_PLAYBUTTON_PATH                "../../resources/textures/background_splash.png" // Play button
+#define GAMESTATE_BACKGROUND_PATH               "../../resources/textures/background_splash.png" // Game background
+#define PLAYER_TEXTURE_PATH                     "../../resources/textures/BODY_male.png" // Player texture
+#define BODY_MALE_TEXTURE_PATH                  "../../resources/textures/BODY_male.png" // Alternative player texture
+#define HUD_HEALTH_BAR_PATH                     "../../resources/textures/health_hearth.png" // HUD health bar
+
+// Paths to fonts
+#define ARIAL_FONT_PATH                         "../../resources/fonts/arial.ttf" // Font path
 
 // Animation frame time (in seconds)
 #define ANIMATION_FRAME_TIME_IDLE               0.2f // Idle
