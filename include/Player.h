@@ -4,6 +4,7 @@
 #include "Animation.h"
 #include "Collision.h"
 #include "Game.h"
+#include "Logger.h"
 #include <SFML/Graphics/Sprite.hpp>
 #include <optional>
 #include <TileMap.h>
@@ -17,7 +18,7 @@ private:
     float m_dirX; // Movement direction on the X axis (-1, 0, 1)
     bool m_isMoving; // Whether the player is moving
     std::optional<sf::Sprite> m_sprite; // Player sprite (may not be loaded)
-
+    Logger m_log;
 public:
     // Creates the player and connects it to game data
     Player(GameDataRef data);

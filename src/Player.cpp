@@ -5,7 +5,7 @@
 
 // Constructor: initializes the reference to game data and sets the movement direction to zero
 Player::Player(GameDataRef data)
-    : m_data(data), m_dirX(0), m_isMoving(false) {}
+    : m_data(data), m_dirX(0), m_isMoving(false), m_log("PlayerLogs.txt") {}
 
 Player::~Player() {}
 
@@ -29,12 +29,6 @@ void Player::init() {
 }
 
 // Handles keyboard input and sets the movement direction, jump, and dash
-/**
- * Handles keyboard input for movement, jumping, double jumping, and dashing.
- * Dash can now be performed both on the ground and in the air, but is always limited by the dash cooldown.
- * The player must be moving left or right (A or D) and dash is only triggered on LShift key press.
- * Jump and double jump logic is unchanged.
- */
 void Player::handleInput() {
     // Direction: D (right) = 1, A (left) = -1, none = 0
     m_dirX = (int)(m_data->input.isKeyPressed(sf::Keyboard::Key::D)) -
@@ -149,6 +143,8 @@ void Player::update(float dt, TileMap* tileMap) {
         m_movement.setOnGround(onGround);
         m_sprite->setScale({vx < 0 ? -1.f : 1.f, 1.f});
         m_sprite->setPosition({nextX, nextY});
+    } else {
+        LOG_ERROR(m_log, "m_sprite is not loaded, pointer == nullptr");
     }
     // --- Animation state selection ---
     float vx = m_movement.getVelocityX();

@@ -1,7 +1,7 @@
 #include "Animation.h"
 
 // Constructor: sets default values for animation fields
-Animation::Animation() : currentFrame(0), frameTime(0.1f), timer(0), currentAnimation(AnimState::Idle), m_sprite(nullptr), frameWidth(0), frameHeight(0), startX(0), startY(0) {}
+Animation::Animation() : currentFrame(0), frameTime(0.1f), timer(0), currentAnimation(AnimState::Idle), m_sprite(nullptr), frameWidth(0), frameHeight(0), startX(0), startY(0), m_log("AnimationLogs.txt") {}
 Animation::~Animation() {}
 
 
@@ -14,6 +14,8 @@ void Animation::setFrameData(int frameW, int frameH, int sX, int sY) {
     startY = sY;
     if (m_sprite) {
         m_sprite->setTextureRect(sf::IntRect({startX, startY}, {frameWidth, frameHeight}));
+    } else {
+        LOG_ERROR(m_log, "m_sprite is not loaded, pointer == nullptr");
     }
 }
 

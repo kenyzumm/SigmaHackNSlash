@@ -21,9 +21,7 @@ void Bullet::update(float dt) {
     m_shape.setPosition(m_position);
 }
 
-void Bullet::draw(sf::RenderWindow* window) {
-    window->draw(m_shape);
-}
+void Bullet::draw(sf::RenderWindow* window) { window->draw(m_shape); }
 
 bool Bullet::checkTileCollision(const TileMap* tileMap) const {
     if (!tileMap) return false;

@@ -1,10 +1,12 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
 #include "Game.h"
+#include <Logger.h>
 #include <string>
 #include <map>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Rect.hpp>
+
 
 // Structure describing one animation (frame range, duration, position in spritesheet)
 struct AnimationData {
@@ -31,7 +33,7 @@ private:
     sf::Sprite* m_sprite; // Pointer to the sprite on which the animation is displayed
     int frameWidth, frameHeight; // Size of a single frame
     int startX, startY; // Position of the first frame in the texture
-
+    Logger m_log;
 public:
     Animation();
     ~Animation();
